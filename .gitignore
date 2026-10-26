@@ -1,0 +1,48 @@
+# dependencies
+node_modules
+
+# next
+.next
+out
+next-env.d.ts
+*.tsbuildinfo
+
+# local embedded PostgreSQL data (dev only) — stored outside the project
+# tree in ~/.maison-reve/pg by scripts/pg-local.mjs
+
+# local email outbox (dev) — written by the app when no email key is set
+var/
+
+# env — never commit real values; .env.example is the committed template
+.env
+.env.*
+!.env.example
+
+# local data directories, database dumps and server logs
+.data/
+*.dump
+*.sql.gz
+*.log
+
+# secrets that are sometimes dropped into a repo by mistake
+*.pem
+*.key
+*.p12
+
+# vercel
+.vercel
+
+# misc
+.DS_Store
+npm-debug.log*
+
+# Neon / agent skills (local tooling)
+.agents/
+skills-lock.json
+
+# Neon / agent skills (local tooling)
+.agents/
+skills-lock.json
+
+# design review artifacts (local only)
+.taste-skill/

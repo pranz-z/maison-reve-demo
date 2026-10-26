@@ -1,0 +1,535 @@
+@import 'tailwindcss';
+
+/*
+ * Maison Rêve design system — "paper and ink"
+ * ------------------------------------------------------------------
+ * The storefront reads like a printed atelier catalogue: warm paper,
+ * near-black ink, one oxblood accent, sharp corners, photography and
+ * type doing the work. Borders, shadows and rounded cards are not part
+ * of the language; tone steps and generous space are.
+ *
+ * Everything a surface paints with is a *semantic* token — page,
+ * surface, line, ink, accent — so the private studio keeps its own
+ * dark working theme without touching a single component.
+ *
+ * Dark mode is scoped: `[data-theme="dark"]` is set on the studio shell
+ * only, never on the storefront.
+ */
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* ── fixed brand palette ─────────────────────────────────────────── */
+@theme {
+  --color-ivory: #f6f1eb;
+  --color-cream: #efe7df;
+  --color-blush: #e8d6ce;
+  --color-rose: #c89a93;
+  --color-gold: #b38b54;
+  --color-mulberry: #6e2a37;
+  --color-charcoal: #191311;
+  --color-taupe: #8a7a72;
+
+  --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --font-serif: 'Bodoni Moda', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
+
+  /* Sharp by default: this is a printed page, not an app card. */
+  --radius-sm: 1px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+  --radius-xl: 2px;
+  --radius-2xl: 3px;
+  --radius-3xl: 4px;
+
+  /* Depth comes from tone, not from floating cards. */
+  --shadow-soft: 0 1px 0 rgb(25 19 17 / 0.05);
+  --shadow-lift: 0 32px 64px -44px rgb(25 19 17 / 0.5);
+}
+
+/* ── semantic tokens (utilities resolve to these at runtime) ─────── */
+@theme inline {
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-ink: var(--accent-ink);
+  --color-gold-ink: var(--gold-ink);
+  --color-danger-ink: var(--danger-ink);
+  --color-danger-line: var(--danger-line);
+}
+
+:root {
+  --page: #f6f1eb;
+  --surface: #fffdfb;
+  --surface-muted: #ede4db;
+  --line: #e0d3c8;
+  --line-strong: #c9b7a9;
+  --ink: #191311;
+  --ink-muted: #675a54; /* 5.5:1 on paper — AA for small text */
+  --accent: #6e2a37;
+  --accent-hover: #57202b;
+  --accent-ink: #faf5ef; /* 9:1 on oxblood */
+  --gold-ink: #7d5c2c; /* champagne, darkened for text — AA */
+  --danger-ink: #93332c;
+  --danger-line: #e2c0bb;
+
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  --page: #1c1614;
+  --surface: #251e1b;
+  --surface-muted: #2e2522;
+  --line: #3e332e;
+  --line-strong: #4f423b;
+  --ink: #f2eae3;
+  --ink-muted: #b3a49b; /* 7.6:1 on the dark page */
+  --accent: #a55a68;
+  --accent-hover: #b96b78;
+  --accent-ink: #fdf7f4;
+  --gold-ink: #dbc08c;
+  --danger-ink: #e49b93;
+  --danger-line: #633a35;
+
+  color-scheme: dark;
+}
+
+/* ── status tones ────────────────────────────────────────────────── */
+/* Any element with data-tone gets --tone-bg / --tone-line / --tone-ink;
+   chips (and the like) read them. Text values are tuned to pass AA on
+   their own background in both themes. */
+
+[data-tone='neutral'] {
+  --tone-bg: #efe8e1;
+  --tone-line: #ddd0c5;
+  --tone-ink: #574b45;
+}
+[data-tone='gold'] {
+  --tone-bg: #f2e7d2;
+  --tone-line: #e2cfa8;
+  --tone-ink: #75551f;
+}
+[data-tone='rose'] {
+  --tone-bg: #f4e4df;
+  --tone-line: #e6cdc6;
+  --tone-ink: #7f3a43;
+}
+[data-tone='mulberry'] {
+  --tone-bg: #6e2a37;
+  --tone-line: #6e2a37;
+  --tone-ink: #faf5ef;
+}
+[data-tone='clay'] {
+  --tone-bg: #f0dfd3;
+  --tone-line: #e2c6b4;
+  --tone-ink: #81402b;
+}
+[data-tone='sage'] {
+  --tone-bg: #e6ece1;
+  --tone-line: #cfdcc6;
+  --tone-ink: #455840;
+}
+[data-tone='blush'] {
+  --tone-bg: #e8d6ce;
+  --tone-line: #dcc4ba;
+  --tone-ink: #6f3a42;
+}
+
+[data-theme='dark'] [data-tone='neutral'] {
+  --tone-bg: #372f2b;
+  --tone-line: #473d38;
+  --tone-ink: #d3c7c0;
+}
+[data-theme='dark'] [data-tone='gold'] {
+  --tone-bg: #3d3325;
+  --tone-line: #574830;
+  --tone-ink: #dbc08c;
+}
+[data-theme='dark'] [data-tone='rose'] {
+  --tone-bg: #402b2d;
+  --tone-line: #573a3c;
+  --tone-ink: #ecc3bd;
+}
+[data-theme='dark'] [data-tone='mulberry'] {
+  --tone-bg: #a55a68;
+  --tone-line: #a55a68;
+  --tone-ink: #fdf7f4;
+}
+[data-theme='dark'] [data-tone='clay'] {
+  --tone-bg: #432b22;
+  --tone-line: #5b3c2f;
+  --tone-ink: #ebbaa2;
+}
+[data-theme='dark'] [data-tone='sage'] {
+  --tone-bg: #2c3528;
+  --tone-line: #3f4b38;
+  --tone-ink: #c0d2b6;
+}
+[data-theme='dark'] [data-tone='blush'] {
+  --tone-bg: #3a2b29;
+  --tone-line: #4f3a37;
+  --tone-ink: #e0c1b9;
+}
+
+/* ── primitives ──────────────────────────────────────────────────── */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: 2px;
+  border: 1px solid var(--tone-line, var(--line));
+  background: var(--tone-bg, var(--surface-muted));
+  color: var(--tone-ink, var(--ink));
+  padding: 0.2rem 0.55rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  line-height: 1.45;
+  white-space: nowrap;
+}
+
+.chip-dot {
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 999px;
+  background: currentColor;
+  flex: none;
+}
+
+.hairline {
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+
+/* ── editorial foundations ───────────────────────────────────────── */
+
+/* Components live in the components layer so a utility (`hidden`,
+   `w-*`, `text-*`) can always override them. */
+@layer components {
+  /* The page's one frame. Everything full-bleed still has a width. */
+  .shell {
+    width: 100%;
+    max-width: 1320px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 3.5rem);
+  }
+
+  .section {
+    padding-block: clamp(4.5rem, 8vw, 7.5rem);
+  }
+
+  /* One very large size, one small size, nothing decorative between. */
+  .display-xl {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(2.85rem, 7.2vw, 6.5rem);
+    line-height: 0.94;
+    letter-spacing: -0.025em;
+  }
+
+  .display-lg {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(2.5rem, 4.7vw, 4.4rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .display-md {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 2rem;
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+  }
+
+  .lede {
+    font-size: clamp(1.05rem, 1.25vw, 1.25rem);
+    line-height: 1.55;
+  }
+
+  /* Section-heading row: heading left, link right, no eyebrow above it. */
+  .heading-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+  }
+
+  .text-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: inherit;
+    position: relative;
+    padding-bottom: 0.15rem;
+    text-decoration: none;
+  }
+  .text-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(1);
+    transform-origin: left;
+    transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+  .text-link:hover::after {
+    transform: scaleX(0.35);
+  }
+
+  /* A flat action: sharp, one colour, no shadow. */
+  .action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    height: 3.25rem;
+    padding-inline: 1.75rem;
+    border-radius: 2px;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+  }
+  .action:hover {
+    background: var(--accent-hover);
+  }
+  .action--ink {
+    background: var(--ink);
+    color: var(--page);
+  }
+  .action--ink:hover {
+    background: #000;
+  }
+  .action--ivory {
+    background: var(--color-ivory);
+    color: var(--ink);
+  }
+  .action--ivory:hover {
+    background: var(--color-blush);
+  }
+  .action--outline {
+    background: transparent;
+    color: currentColor;
+    box-shadow: inset 0 0 0 1px currentColor;
+  }
+  .action--outline:hover {
+    background: currentColor;
+    color: var(--ink);
+  }
+
+  /* Inputs on paper: a written line, not a box. */
+  .line-field {
+    width: 100%;
+    height: 2.75rem;
+    padding: 0;
+    border: 0;
+    border-bottom: 1px solid var(--line-strong);
+    border-radius: 0;
+    background: transparent;
+    color: var(--ink);
+    font-size: 0.9375rem;
+    transition: border-color 0.2s ease;
+  }
+  .line-field:focus {
+    border-bottom-color: var(--accent);
+    outline: none;
+  }
+  .line-field::placeholder {
+    color: var(--ink-muted);
+  }
+
+  /* Studio-side dense controls still use the shared field look. */
+  .field-solid {
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    background: var(--surface);
+  }
+}
+
+/* ── reveal on scroll (progressive: nothing hidden without JS) ───── */
+
+.has-reveal [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+}
+.has-reveal [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    text-rendering: optimizeLegibility;
+    font-size: 1rem;
+    line-height: 1.6;
+    font-feature-settings: 'kern' 1, 'liga' 1;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Tabular figures wherever money and dates line up. */
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* ── home hero ───────────────────────────────────────────────────── */
+
+.hero-photo {
+  animation: hero-pull 22s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes hero-pull {
+  from {
+    transform: scale(1.07);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.hero-rise {
+  animation: hero-rise 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  animation-delay: var(--rise-delay, 0ms);
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-scrim {
+  background:
+    linear-gradient(to top, rgb(15 11 10 / 0.92) 0%, rgb(15 11 10 / 0.62) 26%, rgb(15 11 10 / 0.18) 60%, rgb(15 11 10 / 0.1) 100%),
+    linear-gradient(90deg, rgb(15 11 10 / 0.72) 0%, rgb(15 11 10 / 0.3) 48%, rgb(15 11 10 / 0) 78%);
+}
+
+/* A neutral scrim under words on a photograph — the one permitted gradient. */
+.photo-scrim {
+  background: linear-gradient(
+    to top,
+    rgb(15 11 10 / 0.92) 0%,
+    rgb(15 11 10 / 0.55) 38%,
+    rgb(15 11 10 / 0.12) 72%,
+    rgb(15 11 10 / 0.2) 100%
+  );
+}
+
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.marquee-track {
+  animation: marquee 42s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .hero-photo,
+  .hero-rise,
+  .marquee-track {
+    animation: none !important;
+  }
+
+  .has-reveal [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ── printing ────────────────────────────────────────────────────── */
+
+/* The daily run sheet is the one screen that leaves the building. On paper it
+   becomes a plain document: chrome hidden, colours flattened, lists kept
+   whole. Elements marked data-print-hide never print. */
+@media print {
+  [data-print-hide] {
+    display: none !important;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+  }
+
+  .print-sheet {
+    max-width: none !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    background: #fff !important;
+    color: #3b3536 !important;
+  }
+
+  .print-sheet .print-keep {
+    break-inside: avoid;
+  }
+
+  .print-sheet a {
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+}
